@@ -3,6 +3,8 @@ colorweave
 
 Extract dominant colors from an image as a palette. Also get names of the colors extracted either using CSS3 standard or CSS2.1.
 
+Works with Python2 and Python3.
+
 
 Usage
 ------
