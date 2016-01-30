@@ -6,7 +6,7 @@ import sys
 import webcolors
 from collections import Counter, namedtuple
 from colormath.color_conversions import convert_color
-from colormath.color_diff import delta_e_cie1976
+from colormath.color_diff import delta_e_cmc
 from colormath.color_objects import LabColor, sRGBColor
 from io import BytesIO
 from math import sqrt
@@ -144,7 +144,7 @@ def distance(c1, c2):
     ''' Calculate the visual distance between the two colors. '''
     lc1 = convert_color(sRGBColor(*c1), LabColor)
     lc2 = convert_color(sRGBColor(*c2), LabColor)
-    return delta_e_cie1976(lc1, lc2)
+    return delta_e_cmc(lc1, lc2)
 
 
 def extract_colors(imageData, n, format, output):
