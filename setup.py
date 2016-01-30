@@ -10,14 +10,6 @@ py_version = sys.version_info[:2]
 
 PY3 = py_version[0] == 3
 
-if PY3:
-    raise RuntimeError('colorweave runs only on Python 2.6 or Python 2.7')
-else:
-    if py_version < (2, 6):
-        raise RuntimeError('On Python 2, colorweave requires Python 2.6 or better')
-    if py_version > (2, 6):
-        pass
-
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
