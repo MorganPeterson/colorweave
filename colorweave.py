@@ -87,9 +87,9 @@ convert3To21 = {"indigo": "purple", "gold": "orange", "firebrick": "red",
 
 def get_rgb_dict(colors, which):
     c = {}
+    css3_names = None
+    web_hex_to_rgb = None
     web_rgb_to_name = webcolors.rgb_to_name
-    web_css3_hex_to_names_items = webcolors.css3_hex_to_names.items
-    web_hex_to_rgb = webcolors.hex_to_rgb
 
     for color in colors:
         assert color.startswith('#') and len(color) == 7
@@ -98,7 +98,12 @@ def get_rgb_dict(colors, which):
             cn = web_rgb_to_name(htr)
         except ValueError:
             min_colors = {}
-            for key, name in web_css3_hex_to_names_items():
+
+            if css3_names is None:
+                css3_names = webcolors.css3_hex_to_names.items()
+                web_hex_to_rgb = webcolors.hex_to_rgb
+
+            for key, name in css3_names:
                 r_c, g_c, b_c = web_hex_to_rgb(key)
                 rd = (r_c - htr[0]) * (r_c - htr[0])
                 gd = (g_c - htr[1]) * (g_c - htr[1])
@@ -275,14 +280,6 @@ def autocrop(im, bgcolor):
     return im  # no contents, don't crop to nothing
 
 
-def get_points(img):
-    ''' Get all the points given an image. '''
-
-    w, h = img.size
-    points = [Point(color, 3, count) for count, color in img.getcolors(w * h)]
-    return points
-
-
 # convert RGB to Hex
 def rtoh(rgb):
     return '#{}'.format(''.join(('%02x' % p for p in rgb)))
@@ -301,7 +298,9 @@ def colorz(imageData, n, format, output):
     else:
         n = 5
 
-    points = get_points(img)  # Get all the points in an image
+    # get all points in the image
+    points = [Point(color, 3, count) for count, color in img.getcolors(w * h)]
+
     """ Find the clusters in an image, given n number of clusters and
     difference among the clusters """
     clusters = kmeans(points, n, 10)
