@@ -28,6 +28,7 @@ setup(
         "License :: Free for non-commercial use",
         "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.5"
     ],
     install_requires=[
 	    'Pillow==1.7.8',
@@ -35,7 +36,7 @@ setup(
             'colormath>=1.0.8',
             'numpy>=1.6.1',
 	    'webcolors>=1.4',
-        ],
+    ],
     keywords='color dominant palette colorweave kmeans css3 css21 name webcolors',
     author='Jyotiska NK',
     author_email='jyotiska123@gmail.com',
