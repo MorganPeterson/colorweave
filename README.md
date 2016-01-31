@@ -50,10 +50,10 @@ print palette(url="image_url", n=6, format="css21")
 print palette(url="image_url", n=6, format="css3")
 # Returns a dictionary with each dominant color mapped to its CSS3 color name
     
->> print palette(url="image_url", n=6, format="full")
+print palette(url="image_url", n=6, format="full")
 # Returns the nested structure of each CSS3 color mapped to its parent CSS21 color along with hex codes
     
->> print palette(url="image_url", n=6, format="fullest")
+print palette(url="image_url", n=6, format="fullest")
 # Returns everything above together
 ```
 
