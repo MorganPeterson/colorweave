@@ -17,7 +17,7 @@ setup(
     name='colorweave',
     version='0.1',
     description="Extract dominant colors from an image as a color palette",
-    long_description=read('README.rst'),
+    long_description=read('README.md'),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
@@ -32,9 +32,9 @@ setup(
     ],
     install_requires=[
 	    'Pillow==1.7.8',
-            'PIL>=1.1.6',
-            'colormath>=1.0.8',
-            'numpy>=1.6.1',
+        'PIL>=1.1.6',
+        'colormath>=1.0.8',
+        'numpy>=1.6.1',
 	    'webcolors>=1.4',
     ],
     keywords='color dominant palette colorweave kmeans css3 css21 name webcolors',
