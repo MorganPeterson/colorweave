@@ -20,6 +20,19 @@ print palette(url="image_url")
 ```
 The palette method takes the image from the URL and returns the hex codes of the dominant colors as a list.
 
+####Use different algorithms
+Default algorithm is "delta_e_cie2000"
+
+```python
+print palette(url="http://your-url/img.jpg", algo="delta_e_cmc")
+
+print palette(url="http://your-url/img.jpg", algo="delta_e_cie1976")
+
+print palette(url="http://your-url/img.jpg", algo="delta_e_cie1994")
+
+print palette(url="http://your-url/img.jpg", algo="delta_e_cie2000")
+```
+
 ####Retrive dominant colors from a local image::
 
 ```python

@@ -6,7 +6,8 @@ import sys
 import webcolors
 from collections import Counter, namedtuple
 from colormath.color_conversions import convert_color
-from colormath.color_diff import delta_e_cie2000
+from colormath.color_diff import delta_e_cie1976, delta_e_cie1994
+from colormath.color_diff import delta_e_cie2000, delta_e_cmc
 from colormath.color_objects import LabColor, sRGBColor
 from io import BytesIO
 from math import sqrt
@@ -23,6 +24,7 @@ Color = namedtuple('Color', ['value', 'prominence'])
 Palette = namedtuple('Palette', 'colors bgcolor')
 Point = namedtuple('Point', ('coords', 'n', 'ct'))
 Cluster = namedtuple('Cluster', ('points', 'center', 'n'))
+Algo = ('delta_e_cmc', 'delta_e_cie1976', 'delta_e_cie1994', 'delta_e_cie2000')
 
 convert3To21 = {"indigo": "purple", "gold": "orange", "firebrick": "red",
                 "indianred": "red", "yellow": "yellow",
@@ -145,14 +147,14 @@ def prepare_output(colors, format):
         return output
 
 
-def distance(c1, c2):
+def distance(c1, c2, algo):
     ''' Calculate the visual distance between the two colors. '''
     lc1 = convert_color(sRGBColor(*c1), LabColor)
     lc2 = convert_color(sRGBColor(*c2), LabColor)
-    return delta_e_cie2000(lc1, lc2)
+    return algo(lc1, lc2)
 
 
-def extract_colors(imageData, n, format, output):
+def extract_colors(imageData, n, format, output, algo):
     """ Determine what the major colors are in the given image. """
 
     WHITE = (255, 255, 255)
@@ -190,7 +192,7 @@ def extract_colors(imageData, n, format, output):
             # exact match!
             aggregated[c] += n
         else:
-            d, nearest = min((distance(c, alt), alt) for alt in aggregated)
+            d, nearest = min((distance(c, alt, algo), alt) for alt in aggregated)
             if d < MIN_DISTANCE:
                 # nearby match
                 aggregated[nearest] += n
@@ -374,27 +376,33 @@ def palette(**kwargs):
     mode = kwargs.get('mode', '')
     format = kwargs.get('format', '')
     output = kwargs.get('output', '')
-    algo = kwargs.get('algo', 'delta_e_cie2000')
+    a = kwargs.get('algo', 'delta_e_cie2000')
 
-    if algo == 'delta_e_cmc':
-        from colormath.color_diff import delta_e_cmc
-    elif algo == 'delta_e_cie1976':
-        from colormath.color_diff import delta_e_cie1976
+    if a in Algo:
+        if a is 'delta_e_cmc':
+            a = delta_e_cmc
+        elif a is 'delta_e_cie1976':
+            a = delta_e_cie1976
+        elif a is 'delta_e_cie1994':
+            a = delta_e_cie1994
+        else:
+            a = delta_e_cie2000
     else:
-        from colormath.color_diff import delta_e_cie2000
+        print('Not a vaild algorithm!')
+        return []
 
     # If the image is given as a URL
     if url:
         imageFile = requests.get(url)
         imageData = BytesIO(imageFile.content)
         if not mode:
-            return extract_colors(imageData, n, format, output)
+            return extract_colors(imageData, n, format, output, a)
         elif mode.lower() == 'kmeans' or mode.lower() == 'k-means':
             return colorz(imageData, n, format, output)
     # If image is given as a local file path
     elif path:
         if not mode:
-            return extract_colors(path, n, format, output)
+            return extract_colors(path, n, format, output, a)
         elif mode.lower() == 'kmeans' or mode.lower() == 'k-means':
             return colorz(path, n, format, output)
     # Unknown format of image
