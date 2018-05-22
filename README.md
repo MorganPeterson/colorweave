@@ -1,16 +1,16 @@
-#colorweave
+# colorweave
 
 Extract dominant colors from an image as a palette. Also get names of the colors extracted either using CSS3 standard or CSS2.1.
 
 Works with Python2 and Python3.
 
-##Installation
+## Installation
 
 ```python
 python setup.py install
 ```
 
-##Usage
+## Usage
 
 Retrieve dominant colors from an image URL::
 
@@ -20,7 +20,7 @@ print palette(url="image_url")
 ```
 The palette method takes the image from the URL and returns the hex codes of the dominant colors as a list.
 
-####Use different algorithms
+#### Use different algorithms
 Default algorithm is "delta_e_cie2000"
 
 ```python
@@ -33,25 +33,25 @@ print palette(url="http://your-url/img.jpg", algo="delta_e_cie1994")
 print palette(url="http://your-url/img.jpg", algo="delta_e_cie2000")
 ```
 
-####Retrive dominant colors from a local image::
+#### Retrive dominant colors from a local image::
 
 ```python
 print palette(path="path_to_image")
 ```
 
-####Specify number of colors to be returned::
+#### Specify number of colors to be returned::
 
 ```python
 print palette(url="image_url", n=6)
 ```
 
-####Return the palette as a JSON object::
+#### Return the palette as a JSON object::
 
 ```python
 print palette(url="image_url", n=6, output="json")
 ```
 
-####Select different modes of output::
+#### Select different modes of output::
 
 ```python
 print palette(url="image_url", n=6)
@@ -70,7 +70,7 @@ print palette(url="image_url", n=6, format="fullest")
 # Returns everything above together
 ```
 
-####Use k-means Clustering for extracting dominant colors::
+#### Use k-means Clustering for extracting dominant colors::
 
 ```python
 print palette(url="image_url", n=6, mode="kmeans")
